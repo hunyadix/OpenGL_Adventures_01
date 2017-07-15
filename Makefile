@@ -7,10 +7,12 @@ CXX      = c++
 CXXFLAGS = -std=c++17 -Wall -Wshadow
 LD       = c++
 LDFLAGS  = 
-LIBS     = -lGL -lGLU -lglut -lGLEW -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor
 
-SDL_LIB = -L/usr/local/lib -lSDL2 -Wl,-rpath=/usr/local/lib
 SDL_INCLUDE = -I/usr/local/include
+SDL_LIB = -L/usr/local/lib -lSDL2 -lSDL2_image -Wl,-rpath=/usr/local/lib
+GLEW_LIB = 
+
+LIBS     = -lGL -lGLU -lglut $(SDL_LIB) -lGLEW -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor
 
 SHOOTER_S = ./src/programs/shooter_start.$(SrcSuf)
 SHOOTER_O = ./obj/shooter_start.$(ObjSuf)
@@ -24,11 +26,15 @@ SHOOTER_GAME_S = ./src/Shooter_game.$(SrcSuf)
 SHOOTER_GAME_O = ./obj/Shooter_game.$(ObjSuf)
 OBJS     += $(SHOOTER_O)
 
+PLAYER_S = ./src/Player.$(SrcSuf)
+PLAYER_O = ./obj/Player.$(ObjSuf)
+OBJS     += $(PLAYER_O)
+
 all: $(PROGRAMS)
 
 # Executables
 
-$(SHOOTER_A): $(SHOOTER_O) $(SHOOTER_GAME_O)
+$(SHOOTER_A): $(SHOOTER_O) $(SHOOTER_GAME_O) $(PLAYER_O)
 	@printf "Compiling done, linking \""$@"\"...\n"
 	@$(LD) $(LDFLAGS) $^ $(LIBS) $(OutPutOpt)$@
 	$(MT_EXE)
@@ -38,6 +44,11 @@ $(SHOOTER_A): $(SHOOTER_O) $(SHOOTER_GAME_O)
 # Program obj files
 
 $(SHOOTER_O): $(SHOOTER_S)
+	@printf "Compiling program: \""$<"\"...\n"
+	@$(CXX) $(CXXFLAGS) $(LIBS) -c $< $(OutPutOpt)$@
+	@printf "Done.\n"
+
+$(PLAYER_O): $(PLAYER_S)
 	@printf "Compiling program: \""$<"\"...\n"
 	@$(CXX) $(CXXFLAGS) $(LIBS) -c $< $(OutPutOpt)$@
 	@printf "Done.\n"
