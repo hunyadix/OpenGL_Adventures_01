@@ -2,21 +2,22 @@
 
 #include "SDL2/SDL.h"
 #include "Shooter_game.h"
+#include "Drawable_sprite.h"
 
 class Shooter_game;
 
-class Player
+class Player: public Drawable_sprite
 {
-	private:
-		const Shooter_game*  m_game = nullptr;
-		float                m_x;
-		float                m_y;
-		float                m_speed = 10;
-		SDL_Rect             m_sprite_rect;
-		SDL_Texture*         m_texture = nullptr;
 	public:
-		Player(const Shooter_game* t_game, int t_x, int t_y, int t_w, int t_h, SDL_Surface* t_surface);
-		~Player();
-		void handle_keyboard_events();
-		void draw();
+		enum Player_type
+		{
+			LUNAR_WITCH,
+			EXORCIST,
+			APPARATUS_FABRICATOR
+		};
+		float                m_speed = 10;
+	public:
+		Player(int t_x, int t_y, int t_w, int t_h, SDL_Texture* t_texture);
+		virtual ~Player();
+		void handle_keyboard_events(Shooter_game* t_game);
 };

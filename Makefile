@@ -26,6 +26,14 @@ SHOOTER_GAME_S = ./src/Shooter_game.$(SrcSuf)
 SHOOTER_GAME_O = ./obj/Shooter_game.$(ObjSuf)
 OBJS     += $(SHOOTER_O)
 
+TEXTURE_LOADER_S = ./src/Texture_loader.$(SrcSuf)
+TEXTURE_LOADER_O = ./obj/Texture_loader.$(ObjSuf)
+OBJS     += $(TEXTURE_LOADER_O)
+
+DRAWABLE_SPRITE_S = ./src/Drawable_sprite.$(SrcSuf)
+DRAWABLE_SPRITE_O = ./obj/Drawable_sprite.$(ObjSuf)
+OBJS     += $(DRAWABLE_SPRITE_O)
+
 PLAYER_S = ./src/Player.$(SrcSuf)
 PLAYER_O = ./obj/Player.$(ObjSuf)
 OBJS     += $(PLAYER_O)
@@ -34,7 +42,7 @@ all: $(PROGRAMS)
 
 # Executables
 
-$(SHOOTER_A): $(SHOOTER_O) $(SHOOTER_GAME_O) $(PLAYER_O)
+$(SHOOTER_A): $(SHOOTER_O) $(SHOOTER_GAME_O) $(TEXTURE_LOADER_O) $(DRAWABLE_SPRITE_O) $(PLAYER_O)
 	@printf "Compiling done, linking \""$@"\"...\n"
 	@$(LD) $(LDFLAGS) $^ $(LIBS) $(OutPutOpt)$@
 	$(MT_EXE)
@@ -44,6 +52,16 @@ $(SHOOTER_A): $(SHOOTER_O) $(SHOOTER_GAME_O) $(PLAYER_O)
 # Program obj files
 
 $(SHOOTER_O): $(SHOOTER_S)
+	@printf "Compiling program: \""$<"\"...\n"
+	@$(CXX) $(CXXFLAGS) $(LIBS) -c $< $(OutPutOpt)$@
+	@printf "Done.\n"
+
+$(TEXTURE_LOADER_O): $(TEXTURE_LOADER_S)
+	@printf "Compiling program: \""$<"\"...\n"
+	@$(CXX) $(CXXFLAGS) $(LIBS) -c $< $(OutPutOpt)$@
+	@printf "Done.\n"
+
+$(DRAWABLE_SPRITE_O): $(DRAWABLE_SPRITE_S)
 	@printf "Compiling program: \""$<"\"...\n"
 	@$(CXX) $(CXXFLAGS) $(LIBS) -c $< $(OutPutOpt)$@
 	@printf "Done.\n"

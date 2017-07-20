@@ -22,6 +22,7 @@
 #include "SDL2/SDL_image.h"
 
 #include "Player.h"
+#include "Texture_loader.h"
 
 class Player;
 
@@ -34,10 +35,12 @@ class Shooter_game
 		const float       TARGET_FPS    = 60.0f;
 		const std::string WINDOW_TITLE  = "Shooter game v0.00a";
 		// States
-		SDL_Window*   m_window         = nullptr;
-		SDL_Surface*  m_screen_surface = nullptr;
-		SDL_Renderer* m_renderer       = nullptr;
-		const Uint8*  m_keystate       = nullptr;
+		SDL_Window*                     m_window         = nullptr;
+		SDL_Surface*                    m_screen_surface = nullptr;
+		SDL_Texture*                    m_texture        = nullptr;
+		SDL_Renderer*                   m_renderer       = nullptr;
+		const Uint8*                    m_keystate       = nullptr;
+		std::unique_ptr<Texture_loader> m_texture_loader = nullptr;
 		// Entities
 		std::unique_ptr<Player>        m_player;
 	public:
@@ -54,15 +57,11 @@ class Shooter_game
 		~Shooter_game();
 		Shooter_game(Shooter_game& t_other)                = delete;
 		Shooter_game& operator=(const Shooter_game& t_rhs) = delete;
-		// TODO: move this out
-		SDL_Surface* loadSurface(std::string path, SDL_Surface* t_screen_surface);
 		// Errors
 		[[noreturn, gnu::cold]] static void e_trying_to_init_multiple_instances(); 
 		[[noreturn, gnu::cold]] static void e_sdl_init();
 		[[noreturn, gnu::cold]] static void e_window_context();
 		[[noreturn, gnu::cold]] static void e_glew_init();
-		[[noreturn, gnu::cold]] static void e_image_missing();
-		[[noreturn, gnu::cold]] static void e_image_loading_failed();
 		// Logic
 		void init_window();	
 		void init_player();	
